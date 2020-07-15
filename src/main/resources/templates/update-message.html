@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: base_head (_, ~{}, ~{})"></head>
+<body>
+<div th:include="fragments/layout :: navBar"></div>
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-5">
+      <form action="#" th:action="@{/messages/update}" th:method="post" th:object="${message}">
+        <div class="form-group">
+          <label for="content" class="col-form-label"><h3>Message</h3></label>
+          <input style="float:right" type="submit" class="btn btn-success" value="Update">
+          <a href="javascript:history.back()" class="btn btn-primary mx-1" style="float: right">&larr; Back</a>
+          <input  type="text" name="id" th:value="${message.id}" hidden>
+          <textarea class="form-control" id="content" name="content" rows="5" th:text="${message.content}">
+            </textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

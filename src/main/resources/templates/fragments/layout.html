@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="navBar">
+  <div class="container mx-6 my-3">
+    <div class="row">
+      <div class="col-2">
+        <a href="/">Messages</a>
+      </div>
+      <div class="col-2">
+        <a href="/messages/add">Add New</a>
+      </div>
+      <div class="col-2" sec:authorize="isAuthenticated()">
+        <a href="/logout" >logout</a>
+      </div>
+    </div>
+    <div class="mt-5 col-md-8" style="font-size: large" sec:authorize="isAuthenticated()">
+      <p>You logged in as:
+        <span style="padding-left:1em; font-size: 30px; font-weight: bold; font-style: italic"
+              th:text="${#authentication.principal.username}"></span>
+      </p>
+      <p>authorities: <span style="padding-left:4em;" th:text="${#authentication.getAuthorities()}"></span>
+      </p>
+    </div>
+  </div>
+</div>
+</body>

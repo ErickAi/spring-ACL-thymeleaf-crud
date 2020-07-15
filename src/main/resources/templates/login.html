@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: base_head (~{:: title}, ~{:: scripts}, ~{})">
+  <title>login</title>
+  <scripts>
+    <script>console.log("login script")</script>
+  </scripts>
+</head>
+<body>
+<div th:include="fragments/layout :: navBar"></div>
+<div class="container my-5">
+  <div class="row">
+    <div class="col">
+      <h2>Please Login</h2>
+      <p>check google (etc.) saved passwords for listed usernames.</p>
+      <div class="col-md-2">
+        <form class="mt-3" method="post" name="f" th:action="@{/login}">
+          <input hidden id="admin" name="username" type="text" value="admin"/>
+          <input hidden id="admin-pass" name="password" type="password" value="password"/>
+          <button class="btn btn-primary btn-block" type="submit">admin</button>
+        </form>
+        <form class="mt-4" method="post" name="f" th:action="@{/login}">
+          <input hidden id="user" name="username" type="text" value="user"/>
+          <input hidden id="user-pass" name="password" type="password" value="password"/>
+          <button class="btn btn-primary btn-block" type="submit">user</button>
+        </form>
+        <form class="mt-4" method="post" name="f" th:action="@{/login}">
+          <input hidden id="guest" name="username" type="text" value="guest"/>
+          <input hidden id="guest-pass" name="password" type="password" value="password"/>
+          <button class="btn btn-primary btn-block" type="submit">guest</button>
+        </form>
+        <form class="mt-4" method="post" name="f" th:action="@{/login}">
+          <input hidden id="someone" name="username" type="text" value="someone"/>
+          <input hidden id="someone-pass" name="password" type="password" value="password"/>
+          <button class="btn btn-primary btn-block" type="submit">someone</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
