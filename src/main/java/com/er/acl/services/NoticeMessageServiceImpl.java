@@ -53,19 +53,21 @@ public class NoticeMessageServiceImpl implements NoticeMessageService {
         repository.save(noticeMessage);
     }
 
+    @Transactional
     @PreAuthorize("hasPermission(#forDelete, 'ADMINISTRATION')")
     public void delete(NoticeMessage forDelete) {
         repository.delete(forDelete);
+        deleteAcl(forDelete);
     }
 
     private void createAcl(NoticeMessage noticeMessage) {
+        ObjectIdentity oid = new ObjectIdentityImpl(noticeMessage.getClass(), noticeMessage.getId());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         final Sid owner = new PrincipalSid(authentication);
-        ObjectIdentity oid = new ObjectIdentityImpl(noticeMessage.getClass(), noticeMessage.getId());
-
         final Sid guest = new GrantedAuthoritySid("ROLE_GUEST");
         final Sid user = new GrantedAuthoritySid("ROLE_USER");
         final Sid editor = new GrantedAuthoritySid("ROLE_EDITOR");
+
         MutableAcl acl = mutableAclService.createAcl(oid);
         acl.setOwner(owner);
         acl.insertAce(acl.getEntries().size(), BasePermission.READ, guest, true);
@@ -75,5 +77,10 @@ public class NoticeMessageServiceImpl implements NoticeMessageService {
         acl.insertAce(acl.getEntries().size(), BasePermission.ADMINISTRATION, editor, true);
 
         mutableAclService.updateAcl(acl);
+    }
+
+    private void deleteAcl(NoticeMessage noticeMessage) {
+        ObjectIdentity oid = new ObjectIdentityImpl(noticeMessage.getClass(), noticeMessage.getId());
+        mutableAclService.deleteAcl(oid, false);
     }
 }
