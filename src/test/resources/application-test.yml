@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:acl-demo
+  jpa:
+    hibernate:
+      ddl-auto: none
+logging:
+  level:
+    org.springframework: warn
