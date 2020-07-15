@@ -1,7 +1,7 @@
 package com.er.acl.web;
 
 import com.er.acl.domain.NoticeMessage;
-import com.er.acl.repositories.NoticeMessageRepo;
+import com.er.acl.services.NoticeMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,36 +14,36 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class NoticeMessageController {
 
-    private final NoticeMessageRepo messageRepo;
+    private final NoticeMessageService service;
 
     @GetMapping("/")
     public String getAll(Model model) {
         log.info("GET: /");
-        model.addAttribute("messages", messageRepo.findAll());
+        model.addAttribute("messages", service.getAll());
         return "index";
     }
 
     @PostMapping("/messages")
     public String addMessage(NoticeMessage noticeMessage, Model model) {
         log.info("POST: /messages");
-        messageRepo.save(noticeMessage);
-        model.addAttribute("messages", messageRepo.findAll());
+        service.add(noticeMessage);
+        model.addAttribute("messages", service.getAll());
         return "redirect:/";
     }
 
     @PostMapping("/messages/update")
     public String updateMessage(NoticeMessage noticeMessage, Model model) {
         log.info("POST: /messages/update");
-        messageRepo.save(noticeMessage);
-        model.addAttribute("messages", messageRepo.findAll());
+        service.update(noticeMessage);
+        model.addAttribute("messages", service.getAll());
         return "redirect:/";
     }
 
     @PostMapping("/messages/delete")
     public String deleteMessage(NoticeMessage noticeMessage, Model model) {
         log.info("POST: /messages/delete");
-        messageRepo.delete(noticeMessage);
-        model.addAttribute("messages", messageRepo.findAll());
+        service.delete(noticeMessage);
+        model.addAttribute("messages", service.getAll());
         return "redirect:/";
     }
 
@@ -58,8 +58,7 @@ public class NoticeMessageController {
     @PreAuthorize("hasRole('USER')")
     public String getUpdatePage(@PathVariable("id") long id, Model model) {
         log.info("GET: /messages/{}/edit", id);
-        model.addAttribute("message", messageRepo.findById(id)
-        .orElseThrow(RuntimeException::new));
+        model.addAttribute("message", service.getById(id));
         return "update-message";
     }
 }
